@@ -3,7 +3,7 @@ let bob;
 let jim;
 let color;
 let bg;
-let g=2;
+let g=0.02;
 
 function setup() {
 	createCanvas((windowWidth-20),(windowHeight-20));
@@ -11,8 +11,8 @@ function setup() {
 	let y=100;
 	let w=200;
 	let h=20;
-	bob=new Platform(10,600,window.width/5,20);
-	jim=new Hero(0,0,11,5,random(10,25),random(25,50));
+	bob=new Platform(10,200,window.width/5,20);
+	jim=new Hero(0,0,20,50,random(10,25),random(25,50));
 	console.log("up up down down left right left right b a start");
 	bg=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fminimalist-rider-ghost-wallpaper-desktop-wallpapers.jpg?1511289421363");
 }
@@ -48,9 +48,9 @@ class Platform{
 }
 
 class Hero{
-	constructor(ax,by,x,y,w,h){
-		this.ax=ax;
-		this.by=by;
+	constructor(xv,yv,x,y,w,h){
+		this.xv=xv;
+		this.yv=yv;
 		this.x=x;
 		this.y=y;
 		this.w=w;
@@ -60,6 +60,7 @@ class Hero{
 	}
 
 	move(){
+		//basic movement
 		if(keyIsDown(LEFT_ARROW)){
 			this.x-=3;
 		}
@@ -75,13 +76,15 @@ class Hero{
 		if(keyIsDown(UP_ARROW)){
 					this.y-=5;
 		}
+		//velocity stufs
 		if(bob.contains(this.x,this.y)==false ){
-			this.by+=g;
-			this.y+=this.by;
+			this.yv+=g;
+			this.y+=this.yv;
 		}
-		if(bob.contains(this.x,this.y-(this.h/2))==true){
-			this.by=0;
-			this.y=bob.y-10
+		if(bob.contains(this.x,this.y+((this.h)+1))==true){
+			this.yv=0;
+			//this.y=bob.y+10;
+			console.log("tp");
 		}
 	}
 
@@ -102,11 +105,11 @@ class Hero{
 
 	checkX(w){
 		if(this.x<0){
-			this.x+=5;
+			this.x=w;
 		}
 
 		else if(this.x>w){
-			this.x-=5
+			this.x=0
 		}
 	}
 }
