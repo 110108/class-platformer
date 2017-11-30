@@ -3,7 +3,14 @@ let bob;
 let jim;
 let color;
 let bg;
-let g=0.02;
+let sprite;
+let g=0.2;
+
+function preload(){
+	bg=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fminimalist-rider-ghost-wallpaper-desktop-wallpapers.jpg?1511289421363");
+	sprite=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fsprite.png?1512066872238");
+}
+
 
 function setup() {
 	createCanvas((windowWidth-20),(windowHeight-20));
@@ -14,7 +21,6 @@ function setup() {
 	bob=new Platform(10,200,window.width/5,20);
 	jim=new Hero(0,0,20,50,random(10,25),random(25,50));
 	console.log("up up down down left right left right b a start");
-	bg=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fminimalist-rider-ghost-wallpaper-desktop-wallpapers.jpg?1511289421363");
 }
 
 function draw(){
@@ -80,20 +86,21 @@ class Hero{
 		if(bob.contains(this.x,this.y)==false ){
 			this.yv+=g;
 			this.y+=this.yv;
+			if(this.y>=windowHeight){
+				this.yv=0;
+			}
 		}
 		if(bob.contains(this.x,this.y+((this.h)+1))==true){
 			this.yv=0;
-			//this.y=bob.y+10;
+			this.y++;
 			console.log("tp");
 		}
 	}
 
 	show(){
 
-		stroke(255);
-		strokeWeight(1);
-		fill(color);
-		ellipse(this.x, this.y, this.w, this.h);
+		image(sprite,this.x-50,this.y-50);//https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fur%20mum%20gay.PNG?1512065786364
+		//ellipse(this.x, this.y, this.w, this.h);
 	}
 
 	checkY(h){
