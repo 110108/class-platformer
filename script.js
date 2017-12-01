@@ -1,5 +1,4 @@
 let plats=[];
-let bob;
 let jim;
 let color;
 let bg;
@@ -18,7 +17,9 @@ function setup() {
 	let y=100;
 	let w=200;
 	let h=20;
-	bob=new Platform(10,200,window.width/5,20);
+	for (let i=0; i<x; i++){
+		plats[i]=new Platform(random(10,100),random(10,100),random(10,200),20);
+	}
 	jim=new Hero(0,0,20,50,random(10,25),random(25,50));
 	console.log("up up down down left right left right b a start");
 }
@@ -29,8 +30,21 @@ function draw(){
 	jim.show();
 	jim.checkX(windowWidth-20);
 	jim.checkY(windowHeight-20);
-	bob.show();
-	bob.contains();
+	drawAll();
+	platContains();
+}
+
+function drawAll(){
+	for(int i=0; i<plats.length; i++){
+		plats[i].show();
+		plats[i].contains();
+	}
+}
+
+function platContains(){
+	for(int i=0; i<plats.length; i++){
+		plats[i].contains();
+	}
 }
 
 class Platform{
@@ -48,6 +62,9 @@ class Platform{
 		rect(this.x, this.y, this.w, this.h)
 	}
 
+	touchingPlat(){
+		let result=false;
+		for
 	contains(givenX,givenY){
 		return givenX>this.x && givenX<this.x+this.w && givenY>this.y && givenY<this.y+this.h;
 	}
@@ -83,17 +100,19 @@ class Hero{
 					this.y-=5;
 		}
 		//velocity stufs
-		if(bob.contains(this.x,this.y)==false ){
-			this.yv+=g;
-			this.y+=this.yv;
-			if(this.y>=windowHeight){
-				this.yv=0;
+		for(int i=0; i<plats.length; i++){
+			if(plats[i].contains(this.x,this.y)==false ){
+				this.yv+=g;
+				this.y+=this.yv;
+				if(this.y>=windowHeight){
+					this.yv=0;
+				}
 			}
-		}
-		if(bob.contains(this.x,this.y+((this.h)+1))==true){
-			this.yv=0;
-			this.y++;
-			console.log("tp");
+			if(plats[i].contains(this.x,this.y+((this.h)+1))==true){
+				this.yv=0;
+				this.y++;
+				console.log("tp");
+			}
 		}
 	}
 
