@@ -13,10 +13,7 @@ function preload(){
 
 function setup() {
 	createCanvas((windowWidth-20),(windowHeight-20));
-	let x=100;
-	let y=100;
-	let w=200;
-	let h=20;
+	let x=random(10,30);
 	for (let i=0; i<x; i++){
 		plats[i]=new Platform(random(10,100),random(10,100),random(10,200),20);
 	}
@@ -35,14 +32,15 @@ function draw(){
 }
 
 function drawAll(){
-	for(int i=0; i<plats.length; i++){
+	for(let i=0; i<plats.length; i++){
 		plats[i].show();
 		plats[i].contains();
 	}
 }
 
+
 function platContains(){
-	for(int i=0; i<plats.length; i++){
+	for(let i=0; i<plats.length; i++){
 		plats[i].contains();
 	}
 }
@@ -64,9 +62,11 @@ class Platform{
 
 	touchingPlat(){
 		let result=false;
-		for
-	contains(givenX,givenY){
-		return givenX>this.x && givenX<this.x+this.w && givenY>this.y && givenY<this.y+this.h;
+		for(let i=0; i<plats.length; i++){
+			contains(givenX,givenY){
+				return givenX>this.x && givenX<this.x+this.w && givenY>this.y && givenY<this.y+this.h;
+			}
+		}
 	}
 }
 
@@ -97,7 +97,7 @@ class Hero{
 		}
 
 		if(keyIsDown(UP_ARROW)){
-					this.y-=5;
+					this.y-=10;
 		}
 		//velocity stufs
 		for(int i=0; i<plats.length; i++){
