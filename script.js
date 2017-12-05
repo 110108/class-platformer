@@ -15,9 +15,9 @@ function setup() {
 	createCanvas((windowWidth-20),(windowHeight-20));
 	let x=random(10,30);
 	for (let i=0; i<x; i++){
-		plats[i]=new Platform(random(10,100),random(10,100),random(10,200),20);
+		plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,200),20);
 	}
-	jim=new Hero(0,0,20,50,random(10,25),random(25,50));
+	jim=new Hero(0,0,20,50,random(10,25),20);
 	console.log("up up down down left right left right b a start");
 }
 
@@ -28,19 +28,11 @@ function draw(){
 	jim.checkX(windowWidth-20);
 	jim.checkY(windowHeight-20);
 	drawAll();
-	platContains();
 }
 
 function drawAll(){
 	for(let i=0; i<plats.length; i++){
 		plats[i].show();
-		plats[i].contains();
-	}
-}
-
-
-function platContains(){
-	for(let i=0; i<plats.length; i++){
 		plats[i].contains();
 	}
 }
@@ -60,13 +52,8 @@ class Platform{
 		rect(this.x, this.y, this.w, this.h)
 	}
 
-	touchingPlat(){
-		let result=false;
-		for(let i=0; i<plats.length; i++){
-			contains(givenX,givenY){
-				return givenX>this.x && givenX<this.x+this.w && givenY>this.y && givenY<this.y+this.h;
-			}
-		}
+	contains(givenX,givenY){
+		return
 	}
 }
 
@@ -99,27 +86,36 @@ class Hero{
 		if(keyIsDown(UP_ARROW)){
 					this.y-=10;
 		}
+
 		//velocity stufs
-		for(int i=0; i<plats.length; i++){
-			if(plats[i].contains(this.x,this.y)==false ){
-				this.yv+=g;
-				this.y+=this.yv;
-				if(this.y>=windowHeight){
-					this.yv=0;
-				}
-			}
-			if(plats[i].contains(this.x,this.y+((this.h)+1))==true){
+		if(this.touchingPlats==false ){
+			this.yv+=g;
+			this.y+=this.yv;
+			if(this.y>=windowHeight){
 				this.yv=0;
-				this.y++;
-				console.log("tp");
 			}
 		}
+		if(this.touchingPlats==true){
+			this.yv=0;
+			this.y++;
+			console.log("tp");
+		}
+		console.log(this.yv);
 	}
 
 	show(){
 
-		image(sprite,this.x-50,this.y-50);//https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fur%20mum%20gay.PNG?1512065786364
-		//ellipse(this.x, this.y, this.w, this.h);
+		image(sprite,this.x-50,this.y-50);
+		ellipse(this.x, this.y, this.w, this.h);
+	}
+
+	touchngPlats(){
+		for(let i=0;i<plats.length;i++){
+			if(plats[i].contains(this.x,this.y+10)){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	checkY(h){
