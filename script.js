@@ -30,6 +30,14 @@ function draw(){
 	drawAll();
 }
 
+function resetPlats(){
+	let x=random(10,30);
+	plats=[];
+	for (let i=0; i<x; i++){
+			plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,200),20);
+	}
+}
+
 function drawAll(){
 	for(let i=0; i<plats.length; i++){
 		plats[i].show();
@@ -53,7 +61,7 @@ class Platform{
 	}
 
 	contains(givenX,givenY){
-		return
+		return givenX>this.x && givenX<this.x+this.w && givenY>this.y && givenY<this.y+this.y+this.height;
 	}
 }
 
@@ -71,47 +79,57 @@ class Hero{
 
 	move(){
 		//basic movement
-		if(keyIsDown(LEFT_ARROW)){
-			this.x-=3;
-		}
-
-		if(keyIsDown(RIGHT_ARROW)){
-					this.x+=3;
-		}
-
 		if(keyIsDown(DOWN_ARROW)){
 					this.y+=3;
 		}
-
-		if(keyIsDown(UP_ARROW)){
-					this.y-=10;
-		}
-
 		//velocity stufs
-		if(this.touchingPlats==false ){
+		if(this.touchingPlats()==false){
+			//hero in air
+			if(keyIsDown(LEFT_ARROW)){
+				this.x-=3;
+			}
+
+			if(keyIsDown(RIGHT_ARROW)){
+				this.x+=3;
+			}
 			this.yv+=g;
 			this.y+=this.yv;
 			if(this.y>=windowHeight){
 				this.yv=0;
 			}
 		}
-		if(this.touchingPlats==true){
+		if(this.touchingPlats()==true){
+			//hero on platform
+			//left/right move on platform
+			if(keyIsDown(LEFT_ARROW)){
+				this.x-=6;
+			}
+
+			if(keyIsDown(RIGHT_ARROW)){
+				this.x+=6;
+			}
+			//jump
+			if(keyIsDown(UP_ARROW)||keyIsDown(32)){
+				this.yv=(-5);
+				this.y+=this.yv;
+			}
+
 			this.yv=0;
 			this.y++;
 			console.log("tp");
 		}
-		console.log(this.yv);
 	}
 
 	show(){
 
-		image(sprite,this.x-50,this.y-50);
-		ellipse(this.x, this.y, this.w, this.h);
+		image(sprite,this.x-12.5,this.y-25);
+		//ellipse(this.x, this.y, this.w, this.h);
 	}
 
-	touchngPlats(){
+	touchingPlats(){
 		for(let i=0;i<plats.length;i++){
-			if(plats[i].contains(this.x,this.y+10)){
+			if(plats[i].contains(this.x,this.y+25)){
+				this.y=plats[i].y-10;//move hero to top of platform
 				return true;
 			}
 		}
@@ -119,19 +137,22 @@ class Hero{
 	}
 
 	checkY(h){
-		if(this.y>h){
+		if(this.y>=h){
 			//score--;
 			this.y=0;
+			resetPlats();
 		}
 	}
 
 	checkX(w){
-		if(this.x<0){
+		if(this.x<=0){
 			this.x=w;
+			resetPlats();
 		}
 
-		else if(this.x>w){
-			this.x=0
+		else if(this.x>=w){
+			this.x=0;
+			resetPlats();
 		}
 	}
 }
