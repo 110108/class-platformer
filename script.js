@@ -1,9 +1,10 @@
 let plats=[];
 let jim;
+let score=0;
 let color;
 let bg;
 let sprite;
-let g=0.2;
+let g=0.02;
 
 function preload(){
 	bg=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fminimalist-rider-ghost-wallpaper-desktop-wallpapers.jpg?1511289421363");
@@ -22,6 +23,7 @@ function setup() {
 }
 
 function draw(){
+	text("score: "+score,10,10);
 	background(bg);
 	jim.move();
 	jim.show();
@@ -56,7 +58,7 @@ class Platform{
 	show(){
 		stroke(255);
 		strokeWeight(4);
-		fill(200,75,99);
+		fill(random(0,255),random(0,255),random(0,255));
 		rect(this.x, this.y, this.w, this.h)
 	}
 
@@ -98,9 +100,12 @@ class Hero{
 				this.yv=0;
 			}
 		}
-		if(this.touchingPlats()==true){
+		else{
 			//hero on platform
 			//left/right move on platform
+			this.yv=0;
+			this.y++;
+			console.log("tp")
 			if(keyIsDown(LEFT_ARROW)){
 				this.x-=6;
 			}
@@ -113,10 +118,7 @@ class Hero{
 				this.yv=(-5);
 				this.y+=this.yv;
 			}
-
-			this.yv=0;
-			this.y++;
-			console.log("tp");
+;
 		}
 	}
 
@@ -128,8 +130,9 @@ class Hero{
 
 	touchingPlats(){
 		for(let i=0;i<plats.length;i++){
-			if(plats[i].contains(this.x,this.y+25)){
-				this.y=plats[i].y-10;//move hero to top of platform
+			if(plats[i].contains(this.x,this.y+25)){// never true?????????????????
+				console.log("touching")
+				this.y=plats[i].y-25;//move hero to top of platform
 				return true;
 			}
 		}
@@ -138,7 +141,8 @@ class Hero{
 
 	checkY(h){
 		if(this.y>=h){
-			//score--;
+			this.yv=0
+			score--;
 			this.y=0;
 			resetPlats();
 		}
@@ -146,12 +150,13 @@ class Hero{
 
 	checkX(w){
 		if(this.x<=0){
-			this.x=w;
+			this.x=0;
 			resetPlats();
 		}
 
 		else if(this.x>=w){
-			this.x=0;
+			this.x=w;
+			score++;
 			resetPlats();
 		}
 	}
