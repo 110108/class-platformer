@@ -4,7 +4,7 @@ let score=0;
 let color;
 let bg;
 let sprite;
-let g=0.02;
+let g=0.2;
 
 function preload(){
 	bg=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fminimalist-rider-ghost-wallpaper-desktop-wallpapers.jpg?1511289421363");
@@ -15,8 +15,9 @@ function preload(){
 function setup() {
 	createCanvas((windowWidth-20),(windowHeight-20));
 	let x=random(10,30);
-	for (let i=0; i<x; i++){
-		plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,200),20);
+	plats[0]=new Platform(5,80,random(100,200),20);
+	for (let i=1; i<x; i++){
+		plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,windowWidth-60),20);
 	}
 	jim=new Hero(0,0,20,50,random(10,25),20);
 	console.log("up up down down left right left right b a start");
@@ -43,7 +44,6 @@ function resetPlats(){
 function drawAll(){
 	for(let i=0; i<plats.length; i++){
 		plats[i].show();
-		plats[i].contains();
 	}
 }
 
@@ -63,7 +63,7 @@ class Platform{
 	}
 
 	contains(givenX,givenY){
-		return givenX>this.x && givenX<this.x+this.w && givenY>this.y && givenY<this.y+this.y+this.height;
+		return givenX>this.x && givenX<this.x+this.w && givenY>this.y && givenY<this.y+this.h;
 	}
 }
 
@@ -105,7 +105,6 @@ class Hero{
 			//left/right move on platform
 			this.yv=0;
 			this.y++;
-			console.log("tp")
 			if(keyIsDown(LEFT_ARROW)){
 				this.x-=6;
 			}
@@ -115,23 +114,20 @@ class Hero{
 			}
 			//jump
 			if(keyIsDown(UP_ARROW)||keyIsDown(32)){
-				this.yv=(-5);
+				this.yv=(-7.5);
 				this.y+=this.yv;
 			}
-;
 		}
 	}
 
 	show(){
 
 		image(sprite,this.x-12.5,this.y-25);
-		//ellipse(this.x, this.y, this.w, this.h);
 	}
 
 	touchingPlats(){
 		for(let i=0;i<plats.length;i++){
-			if(plats[i].contains(this.x,this.y+25)){// never true?????????????????
-				console.log("touching")
+			if(plats[i].contains(this.x,this.y+25)){
 				this.y=plats[i].y-25;//move hero to top of platform
 				return true;
 			}
@@ -150,12 +146,12 @@ class Hero{
 
 	checkX(w){
 		if(this.x<=0){
-			this.x=0;
+			this.x=w;
 			resetPlats();
 		}
 
 		else if(this.x>=w){
-			this.x=w;
+			this.x=0;
 			score++;
 			resetPlats();
 		}
