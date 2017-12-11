@@ -1,4 +1,5 @@
 let plats=[];
+let coins=[];
 let jim;
 let score=0;
 let color;
@@ -15,9 +16,14 @@ function preload(){
 function setup() {
 	createCanvas((windowWidth-20),(windowHeight-20));
 	let x=random(10,30);
-	plats[0]=new Platform(5,80,random(100,200),20);
+	let y=random(0,15);
 	for (let i=1; i<x; i++){
 		plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,windowWidth-60),20);
+	}
+	for(let i=1;i<plats.length;i++){
+		for(let i=1;i<y;i++){
+			coins[i]=new coin();
+		}
 	}
 	jim=new Hero(0,0,20,50,random(10,25),20);
 	console.log("up up down down left right left right b a start");
@@ -44,6 +50,13 @@ function resetPlats(){
 function drawAll(){
 	for(let i=0; i<plats.length; i++){
 		plats[i].show();
+	}
+}
+
+class coin{
+	constructor(x,y){
+		this.x=x;
+		this.y=y;
 	}
 }
 
