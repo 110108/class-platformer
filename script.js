@@ -19,19 +19,15 @@ function setup() {
 	let y=random(0,15);
 	for (let i=1; i<x; i++){
 		plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,windowWidth-60),20);
-	}
-	for(let i=1;i<plats.length;i++){
-		for(let i=1;i<y;i++){
-			coins[i]=new coin();
-		}
+		coins[i]=new coin((plats[i].x+(plats[i].w/2)),(plats[i]-5));
 	}
 	jim=new Hero(0,0,20,50,random(10,25),20);
 	console.log("up up down down left right left right b a start");
 }
 
 function draw(){
-	text("score: "+score,10,10);
 	background(bg);
+	text("score: "+score,10,10);
 	jim.move();
 	jim.show();
 	jim.checkX(windowWidth-20);
@@ -39,11 +35,12 @@ function draw(){
 	drawAll();
 }
 
-function resetPlats(){
+function resetScreen(){
 	let x=random(10,30);
 	plats=[];
 	for (let i=0; i<x; i++){
 			plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,200),20);
+			coins[i]=new coin((plats[i].x+(platform.w/2)),(plats[i]-5));
 	}
 }
 
@@ -51,12 +48,22 @@ function drawAll(){
 	for(let i=0; i<plats.length; i++){
 		plats[i].show();
 	}
+	for(let i=0;i<coins.length;i++){
+		coins[i].show();
+	}
 }
 
 class coin{
 	constructor(x,y){
 		this.x=x;
 		this.y=y;
+	}
+
+	show(){
+		stroke(255);
+		strokeWeight(2);
+		fill(random(0,255),random(0,255),random(0,255));
+		ellipse(this.x,this.y,5,5);
 	}
 }
 
@@ -153,20 +160,20 @@ class Hero{
 			this.yv=0
 			score--;
 			this.y=0;
-			resetPlats();
+			resetScreen();
 		}
 	}
 
 	checkX(w){
 		if(this.x<=0){
 			this.x=w;
-			resetPlats();
+			resetScreen();
 		}
 
 		else if(this.x>=w){
 			this.x=0;
 			score++;
-			resetPlats();
+			resetScreen();
 		}
 	}
 }
