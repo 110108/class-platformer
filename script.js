@@ -6,6 +6,7 @@ let color;
 let bg;
 let sprite;
 let g=0.2;
+let d;
 
 function preload(){
 	bg=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fminimalist-rider-ghost-wallpaper-desktop-wallpapers.jpg?1511289421363");
@@ -55,10 +56,10 @@ function drawAll(){
 }
 
 class coin{
-	constructor(x,y,r){
+	constructor(x,y){
 		this.x=x;
 		this.y=y;
-		this.r=r;
+		this.r=25;
 	}
 
 	show(){
@@ -70,9 +71,10 @@ class coin{
 
 	contains(givenX,givenY){
 		d=dist(this.x,this.y,jim.x,jim.y);
-		if(this.r>d){
-			//
+		if(d>this.r){
+			return true;
 		}
+	}
 }
 
 class Platform{
@@ -146,17 +148,34 @@ class Hero{
 				this.y+=this.yv;
 			}
 		}
+
+		//coins shmut
+		//doesn't work for some reason
+		if(this.touchingCoins==true){
+			coins[i].splice(1,i);
+			score++;
+		}
 	}
 
 	show(){
 
 		image(sprite,this.x-12.5,this.y-25);
+		ellipse(this.x,this.y,5,5);
 	}
 
 	touchingPlats(){
 		for(let i=0;i<plats.length;i++){
 			if(plats[i].contains(this.x,this.y+25)){
 				this.y=plats[i].y-25;//move hero to top of platform
+				return true;
+			}
+		}
+		return false;
+	}
+
+	touchingCoins(){
+		for(let i=0;i<coins.length;i++){
+			if(coins[i].contains(this.x,this.y)==true){
 				return true;
 			}
 		}
