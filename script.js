@@ -17,9 +17,9 @@ function setup() {
 	createCanvas((windowWidth-20),(windowHeight-20));
 	let x=random(10,30);
 	let y=random(0,15);
-	for (let i=1; i<x; i++){
+	for (let i=0; i<x; i++){
 		plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,windowWidth-60),20);
-		coins[i]=new coin((plats[i].x+(plats[i].w/2)),(plats[i]-5));
+		coins[i]=new coin((plats[i].x+(plats[i].w/2)),(plats[i].y-10));
 	}
 	jim=new Hero(0,0,20,50,random(10,25),20);
 	console.log("up up down down left right left right b a start");
@@ -38,9 +38,10 @@ function draw(){
 function resetScreen(){
 	let x=random(10,30);
 	plats=[];
+	coins=[];
 	for (let i=0; i<x; i++){
 			plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,200),20);
-			coins[i]=new coin((plats[i].x+(platform.w/2)),(plats[i]-5));
+			coins[i]=new coin((plats[i].x+(plats[i].w/2)),(plats[i].y-10));
 	}
 }
 
@@ -54,9 +55,10 @@ function drawAll(){
 }
 
 class coin{
-	constructor(x,y){
+	constructor(x,y,r){
 		this.x=x;
 		this.y=y;
+		this.r=r;
 	}
 
 	show(){
@@ -65,6 +67,12 @@ class coin{
 		fill(random(0,255),random(0,255),random(0,255));
 		ellipse(this.x,this.y,5,5);
 	}
+
+	contains(givenX,givenY){
+		d=dist(this.x,this.y,jim.x,jim.y);
+		if(this.r>d){
+			//
+		}
 }
 
 class Platform{
@@ -167,6 +175,7 @@ class Hero{
 	checkX(w){
 		if(this.x<=0){
 			this.x=w;
+			score++;
 			resetScreen();
 		}
 
