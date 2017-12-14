@@ -34,6 +34,17 @@ function draw(){
 	jim.checkX(windowWidth-20);
 	jim.checkY(windowHeight-20);
 	drawAll();
+	coinsheck();
+}
+
+function coinsheck(){
+	for(let i=0; i<coins.length; i++){
+		let d=dist(coins[i].x,coins[i].y,jim.x,jim.y)
+		if(d<coins[i].r){
+			coins.splice(i,1);
+			score++;
+		}
+	}
 }
 
 function resetScreen(){
@@ -67,13 +78,6 @@ class coin{
 		strokeWeight(2);
 		fill(random(0,255),random(0,255),random(0,255));
 		ellipse(this.x,this.y,5,5);
-	}
-
-	contains(givenX,givenY){
-		d=dist(this.x,this.y,jim.x,jim.y);
-		if(d>this.r){
-			return true;
-		}
 	}
 }
 
@@ -148,13 +152,6 @@ class Hero{
 				this.y+=this.yv;
 			}
 		}
-
-		//coins shmut
-		//doesn't work for some reason
-		if(this.touchingCoins==true){
-			coins[i].splice(1,i);
-			score++;
-		}
 	}
 
 	show(){
@@ -167,15 +164,6 @@ class Hero{
 		for(let i=0;i<plats.length;i++){
 			if(plats[i].contains(this.x,this.y+25)){
 				this.y=plats[i].y-25;//move hero to top of platform
-				return true;
-			}
-		}
-		return false;
-	}
-
-	touchingCoins(){
-		for(let i=0;i<coins.length;i++){
-			if(coins[i].contains(this.x,this.y)==true){
 				return true;
 			}
 		}
