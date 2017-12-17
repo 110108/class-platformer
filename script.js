@@ -4,13 +4,16 @@ let jim;
 let score=0;
 let color;
 let bg;
+let csprite;
 let sprite;
 let g=0.2;
 let d;
+let gamestate="title";
 
 function preload(){
 	bg=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fminimalist-rider-ghost-wallpaper-desktop-wallpapers.jpg?1511289421363");
 	sprite=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fsprite.png?1512066872238");
+	csprite=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fbitcoin%20cash.png?1513473190601")
 }
 
 
@@ -27,14 +30,22 @@ function setup() {
 }
 
 function draw(){
-	background(bg);
-	text("score: "+score,10,10);
-	jim.move();
-	jim.show();
-	jim.checkX(windowWidth-20);
-	jim.checkY(windowHeight-20);
-	drawAll();
-	coinsheck();
+	if(gamestate==title){
+		//title screen
+	}
+	else if(gamestate=="ingame"){
+		background(bg);
+		text("score: "+score,10,10);
+		jim.move();
+		jim.show();
+		jim.checkX(windowWidth-20);
+		jim.checkY(windowHeight-20);
+		drawAll();
+		coinsheck();
+	}
+	else if(gamestate==win){
+		//win screen
+	}
 }
 
 function coinsheck(){
@@ -74,6 +85,7 @@ class coin{
 	}
 
 	show(){
+		image(csprite,this.x-15,this.y-16)
 		stroke(255);
 		strokeWeight(2);
 		fill(random(0,255),random(0,255),random(0,255));
