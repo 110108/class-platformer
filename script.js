@@ -9,9 +9,15 @@ let sprite;
 let g=0.2;
 let d;
 let gamestate="title";
+let title;
+let win;
+let loss;
 
 function preload(){
 	bg=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fminimalist-rider-ghost-wallpaper-desktop-wallpapers.jpg?1511289421363");
+	title=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fgame-dev-startscreen-01.png?1511628691331");
+	win=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fws.png?1511629985411");
+	loss=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fls.png?1513538635616");
 	sprite=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fsprite.png?1512066872238");
 	csprite=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fbitcoin%20cash.png?1513473190601")
 }
@@ -30,8 +36,8 @@ function setup() {
 }
 
 function draw(){
-	if(gamestate==title){
-		//title screen
+	if(gamestate=="title"){
+		background(title);
 	}
 	else if(gamestate=="ingame"){
 		background(bg);
@@ -42,11 +48,34 @@ function draw(){
 		jim.checkY(windowHeight-20);
 		drawAll();
 		coinsheck();
+		if(score>50){
+			gamestate="win"
+		}
+		if (score<=-10) {
+			gamestate="loss"
+		}
 	}
-	else if(gamestate==win){
-		//win screen
+	else if(gamestate=="win"){
+		background(win);
+		score=0;
+	}
+	else if(gamestate=="loss"){
+		background(loss);
+		score=0;
 	}
 }
+
+ function mousePressed(){
+	if(gamestate=="title"){
+		gamestate="ingame"
+	}
+	else if(gamestate=="win"){
+		gamestate="title"
+	}
+	else if(gamestate=="loss"){
+		gamestate="title"
+	}
+ }
 
 function coinsheck(){
 	for(let i=0; i<coins.length; i++){
