@@ -19,7 +19,7 @@ function preload(){
 	win=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fws.png?1511629985411");
 	loss=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fls.png?1513538635616");
 	sprite=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fsprite.png?1512066872238");
-	csprite=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fbitcoin%20cash.png?1513473190601")
+	csprite=loadImage("https://cdn.glitch.com/f3153797-32fb-4ded-bb9d-20975e419671%2Fbitcoin%20cash.png?1513620274995")
 }
 
 
@@ -28,7 +28,7 @@ function setup() {
 	let x=random(10,30);
 	let y=random(0,15);
 	for (let i=0; i<x; i++){
-		plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,windowWidth-60),20);
+		plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,200),20,random(0,255),random(0,255),random(0,255));
 		coins[i]=new coin((plats[i].x+(plats[i].w/2)),(plats[i].y-10));
 	}
 	jim=new Hero(0,0,20,50,random(10,25),20);
@@ -48,7 +48,7 @@ function draw(){
 		jim.checkY(windowHeight-20);
 		drawAll();
 		coinsheck();
-		if(score>50){
+		if(score>=20){
 			gamestate="win"
 		}
 		if (score<=-10) {
@@ -92,7 +92,7 @@ function resetScreen(){
 	plats=[];
 	coins=[];
 	for (let i=0; i<x; i++){
-			plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,200),20);
+			plats[i]=new Platform(random(10,windowWidth-25),random(10,windowHeight-25),random(10,200),20,random(0,255),random(0,255),random(0,255));
 			coins[i]=new coin((plats[i].x+(plats[i].w/2)),(plats[i].y-10));
 	}
 }
@@ -114,26 +114,25 @@ class coin{
 	}
 
 	show(){
-		image(csprite,this.x-15,this.y-16)
-		stroke(255);
-		strokeWeight(2);
-		fill(random(0,255),random(0,255),random(0,255));
-		ellipse(this.x,this.y,5,5);
+		image(csprite,this.x-15,this.y-16);
 	}
 }
 
 class Platform{
-	constructor(x,y,w,h){
+	constructor(x,y,w,h,r,g,b){
 		this.x=x;
 		this.y=y;
 		this.w=w;
 		this.h=h;
+		this.r=r;
+		this.g=g;
+		this.b=b;
 	}
 
 	show(){
-		stroke(255);
-		strokeWeight(4);
-		fill(random(0,255),random(0,255),random(0,255));
+		//stroke(255);
+		//strokeWeight(4);
+		fill(this.r,this.g,this.b);
 		rect(this.x, this.y, this.w, this.h)
 	}
 
@@ -198,7 +197,6 @@ class Hero{
 	show(){
 
 		image(sprite,this.x-12.5,this.y-25);
-		ellipse(this.x,this.y,5,5);
 	}
 
 	touchingPlats(){
@@ -222,13 +220,11 @@ class Hero{
 
 	checkX(w){
 		if(this.x<=0){
-			this.x=w;
-			score++;
-			resetScreen();
+			this.x=1;
 		}
 
 		else if(this.x>=w){
-			this.x=0;
+			this.x=1;
 			score++;
 			resetScreen();
 		}
